@@ -5,7 +5,7 @@ spring:
     scheme: classpath*:db/${database.engine}/schema.sql
     data: classpath*:db/${database.engine}/data.sql
     # Uncomment this the first time the app runs
-    initialization-mode: always
+    # initialization-mode: always
   thymeleaf:
     mode: HTML
   jpa.hibernate.ddl-auth: none
@@ -46,4 +46,13 @@ spring:
 ---
 spring:
   profiles: development
-database: hsqldb
+database.engine: hsqldb
+---
+spring:
+  profiles: test
+  datasource:
+    scheme: classpath*:db/hsqldb/schema.sql
+    data: classpath*:db/hsqldb/data.sql
+    # Uncomment this the first time the app runs
+    # initialization-mode: always
+database.engine: hsqldb

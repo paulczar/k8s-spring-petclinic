@@ -15,7 +15,9 @@
   <name>petclinic</name>
 
   <properties>
-
+    <!-- Version properties -->
+    <docker.user>paulczar</docker.user>
+    <docker.tag>${project.version}-${git.commit.id.abbrev}</docker.tag>
     <!-- Generic properties -->
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -220,7 +222,7 @@
                   <username>${env.DOCKER_USERNAME}</username>
                   <password>${env.DOCKER_PASSWORD}</password>
               </auth>
-              <image>${docker.user}/${project.name}:${project.version}</image>
+              <image>${docker.user}/${project.name}:${docker.tag}</image>
           </to>
           </configuration>
       </plugin>
@@ -239,7 +241,7 @@
           </executions>
           <configuration>
               <repository>${docker.user}/${project.name}</repository>
-              <tag>${project.version}</tag>
+              <tag>${docker.tag}</tag>
               <buildArgs>
                   <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
               </buildArgs>
