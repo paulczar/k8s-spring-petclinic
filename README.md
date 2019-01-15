@@ -1,4 +1,4 @@
-# Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=master)](https://travis-ci.org/spring-projects/spring-petclinic/)
+# Spring PetClinic Sample Application [![Build Status](http://drone.pivlab.gcp.paulczar.wtf/api/badges/paulczar/k8s-spring-petclinic/status.svg)](http://drone.pivlab.gcp.paulczar.wtf/paulczar/k8s-spring-petclinic)
 
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
@@ -27,6 +27,28 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 ## In case you find a bug/suggested improvement for Spring Petclinic
 Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
 
+## Running in Docker locally
+
+Build your project using the maven dockerfile plugin:
+
+```
+mvn clean install -DskipTests -Ddocker.user=paulczar
+```
+
+Use docker compose to start the app:
+
+```
+docker-compose up -d
+```
+
+> note: occaisionally the app will start before the database is ready and crash, if that happens just rerun `docker-compose up -d` again.
+
+Load the database schema and data:
+
+```
+cat src/main/resources/db/mysql/schema.sql src/main/resources/db/mysql/data.sql \
+   | docker exec -i springpetclinic_database_1 mysql petclinic
+```
 
 ## Database configuration
 
