@@ -1,9 +1,22 @@
-mysql:
-  image: mysql:5.7
-  ports:
-    - "3306:3306"
-  environment:
-    - MYSQL_ROOT_PASSWORD=petclinic
-    - MYSQL_DATABASE=petclinic
-  volumes:
-    - "./conf.d:/etc/mysql/conf.d:ro"
+version: "3"
+services:
+
+  petclinic:
+    image: paulczar/petclinic:2.1.0.BUILD-SNAPSHOT
+    ports:
+      - "8080:8080/tcp"
+    environment:
+      - DATABASE_PASSWORD=petclinic
+      - DATABASE_USERNAME=petclinic
+      - DATABASE_NAME=petclinic
+      - DATABASE_ENGINE=mysql
+      - SPRING_PROFILES_ACTIVE=docker
+  database:
+    image: mysql:5.7
+    ports:
+      - "3306/tcp"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_PASSWORD=petclinic
+      - MYSQL_USER=petclinic
+      - MYSQL_DATABASE=petclinic

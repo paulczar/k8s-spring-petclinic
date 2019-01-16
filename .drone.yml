@@ -1,0 +1,51 @@
+kind: pipeline
+name: default
+
+steps:
+## Lint Helm Charts
+#- name: helm-chart-tests
+#  image: quay.io/helmpack/chart-testing:v2.1.0
+#  commands:
+#    - ct lint --all --chart-dirs=deployment/helm --chart-repos=incubator=https://kubernetes-charts-incubator.storage.googleapis.com
+
+## Run Unit tests
+- name: unit-tests
+  environment:
+  image: maven:3.6-jdk-11
+  commands:
+    - mvn clean test -Dspring.profiles.active=test
+  volumes:
+  - name: cache
+    path: /root/.m2/repository/
+
+## build binaries to ensure they compile fine
+- name: build-binaries
+  environment:
+  image: maven:3.6-jdk-11
+  commands:
+    - mvn clean install -DskipTests -Ddockerfile.skip
+  volumes:
+  - name: cache
+    path: /root/.m2/repository/
+
+## build and push docker image when master branch
+- name: build-and-push-images
+  when:
+    branch: [master]
+    event: push
+  image: maven:3.6-jdk-11
+  environment:
+    DOCKER_USERNAME:
+      from_secret: docker-username
+    DOCKER_PASSWORD:
+      from_secret: docker-password
+  commands:
+    - mvn compile jib:build -Ddocker.user=$${DOCKER_USERNAME}
+  volumes:
+  - name: cache
+    path: /root/.m2/repository/
+
+
+volumes:
+- name: cache
+  temp: {}

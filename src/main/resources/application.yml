@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    active: development
+  datasource:
+    schema: "classpath*:db/${database.engine}/schema.sql"
+    data: "classpath*:db/${database.engine}/data.sql"
+    # Uncomment this the first time the app runs
+    # initialization-mode: always
+  thymeleaf:
+    mode: HTML
+  jpa:
+    hibernate:
+      ddl-auto: "none"
+  messages:
+    basename: messages/messages
+  resources:
+    cache:
+      cachecontrol:
+        # Maximum time static resources should be cached
+        max-age: 12h
+
+# Actuator / Management
+management.endpoints.web.base-path: /manage
+management.endpoints.web.exposure.include: "*"
+
+# Logging
+logging.level.org.springframework: INFO
+# logging.level.org.springframework.web: DEBUG
+# logging.level.org.springframework.context.annotation: TRACE
+---
+spring:
+  profiles: docker
+  datasource:
+    url: "jdbc:mysql://${database.host}/${database.name}"
+    username: ${database.username}
+    password: ${database.password}
+    # Uncomment this the first time the app runs
+    #initialization-mode: always
+database.engine: mysql
+---
+spring:
+  profiles: kubernetes
+---
+spring:
+  profiles: development
+database.engine: hsqldb
+---
+spring:
+  profiles: test
+database.engine: hsqldb

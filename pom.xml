@@ -15,7 +15,9 @@
   <name>petclinic</name>
 
   <properties>
-
+    <!-- Version properties -->
+    <docker.user>paulczar</docker.user>
+    <docker.tag>${project.version}-${git.commit.id.abbrev}</docker.tag>
     <!-- Generic properties -->
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -206,6 +208,44 @@
             <version>${mockito.version}</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+          <groupId>com.google.cloud.tools</groupId>
+          <artifactId>jib-maven-plugin</artifactId>
+          <version>1.0.0-rc2</version>
+          <configuration>
+          <from>
+              <image>openjdk:11.0.1-jre-slim-sid</image>
+          </from>
+          <to>
+              <auth>
+                  <username>${env.DOCKER_USERNAME}</username>
+                  <password>${env.DOCKER_PASSWORD}</password>
+              </auth>
+              <image>${docker.user}/${project.name}:${docker.tag}</image>
+          </to>
+          </configuration>
+      </plugin>
+      <plugin>
+          <groupId>com.spotify</groupId>
+          <artifactId>dockerfile-maven-plugin</artifactId>
+          <version>1.4.9</version>
+          <executions>
+              <execution>
+                  <id>default</id>
+                  <goals>
+                      <goal>build</goal>
+                      <goal>push</goal>
+                  </goals>
+              </execution>
+          </executions>
+          <configuration>
+              <repository>${docker.user}/${project.name}</repository>
+              <tag>${docker.tag}</tag>
+              <buildArgs>
+                  <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+              </buildArgs>
+          </configuration>
       </plugin>
     </plugins>
   </build>
