@@ -40,6 +40,13 @@ database.engine: mysql
 ---
 spring:
   profiles: kubernetes
+  datasource:
+    url: "jdbc:mysql://${database.host}/${database.name}"
+    username: ${database.username}
+    password: ${database.password}
+    # Uncomment this the first time the app runs
+    #initialization-mode: always
+database.engine: mysql
 ---
 spring:
   profiles: development

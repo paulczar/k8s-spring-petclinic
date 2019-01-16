@@ -222,7 +222,8 @@
                   <username>${env.DOCKER_USERNAME}</username>
                   <password>${env.DOCKER_PASSWORD}</password>
               </auth>
-              <image>${docker.user}/${project.name}:${docker.tag}</image>
+              <image>${docker.user}/${project.name}:${project.version}</image>
+              <tags>latest</tags>
           </to>
           </configuration>
       </plugin>
@@ -231,17 +232,33 @@
           <artifactId>dockerfile-maven-plugin</artifactId>
           <version>1.4.9</version>
           <executions>
-              <execution>
-                  <id>default</id>
-                  <goals>
-                      <goal>build</goal>
-                      <goal>push</goal>
-                  </goals>
-              </execution>
+            <execution>
+              <id>tag-latest</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>build</goal>
+                <goal>tag</goal>
+                <goal>push</goal>
+              </goals>
+              <configuration>
+                <tag>latest</tag>
+              </configuration>
+            </execution>
+            <execution>
+              <id>tag-version</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>build</goal>
+                <goal>tag</goal>
+                <goal>push</goal>
+              </goals>
+              <configuration>
+                <tag>${project.version}</tag>
+              </configuration>
+            </execution>
           </executions>
           <configuration>
               <repository>${docker.user}/${project.name}</repository>
-              <tag>${docker.tag}</tag>
               <buildArgs>
                   <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
               </buildArgs>

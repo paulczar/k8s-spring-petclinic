@@ -32,7 +32,15 @@ Our issue tracker is available here: https://github.com/spring-projects/spring-p
 Build your project using the maven dockerfile plugin:
 
 ```
-mvn clean install -DskipTests -Ddocker.user=paulczar
+mvn dockerfile:build
+```
+
+(optional) If you want to push the image up to the docker registry:
+
+```
+mvn dockerfile:tag@tag-version
+mvn dockerfile:push@push-latest
+mvn dockerfile:push@push-version
 ```
 
 Use docker compose to start the app:

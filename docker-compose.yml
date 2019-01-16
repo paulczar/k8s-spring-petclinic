@@ -2,7 +2,7 @@ version: "3"
 services:
 
   petclinic:
-    image: paulczar/petclinic:2.1.0.BUILD-SNAPSHOT
+    image: paulczar/petclinic:2.1.0.BUILD-SNAPSHOT-143bea7
     ports:
       - "8080:8080/tcp"
     environment:
@@ -10,6 +10,7 @@ services:
       - DATABASE_USERNAME=petclinic
       - DATABASE_NAME=petclinic
       - DATABASE_ENGINE=mysql
+      - DATABASE_HOST=database
       - SPRING_PROFILES_ACTIVE=docker
   database:
     image: mysql:5.7
