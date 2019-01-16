@@ -10,15 +10,23 @@ steps:
 
 ## Run Unit tests
 - name: unit-tests
+  environment:
   image: maven:3.6-jdk-11
   commands:
-    - mvn test -Dspring.profiles.active=test
+    - mvn clean test -Dspring.profiles.active=test
+  volumes:
+  - name: cache
+    path: /root/.m2/repository/
 
 ## build binaries to ensure they compile fine
 - name: build-binaries
+  environment:
   image: maven:3.6-jdk-11
   commands:
-    - mvn install -DskipTests -Ddockerfile.skip
+    - mvn clean install -DskipTests -Ddockerfile.skip
+  volumes:
+  - name: cache
+    path: /root/.m2/repository/
 
 ## build and push docker image when master branch
 - name: build-and-push-images
@@ -33,3 +41,11 @@ steps:
       from_secret: docker-password
   commands:
     - mvn compile jib:build -Ddocker.user=$${DOCKER_USERNAME}
+  volumes:
+  - name: cache
+    path: /root/.m2/repository/
+
+
+volumes:
+- name: cache
+  temp: {}
