@@ -12,13 +12,13 @@ steps:
 - name: unit-tests
   image: maven:3.6-jdk-11
   commands:
-    - mvn clean test -Dspring.profiles.active=test
+    - mvn test -Dspring.profiles.active=test
 
 ## build binaries to ensure they compile fine
 - name: build-binaries
   image: maven:3.6-jdk-11
   commands:
-    - mvn clean install -DskipTests -Ddockerfile.skip
+    - mvn install -DskipTests -Ddockerfile.skip
 
 ## build and push docker image when master branch
 - name: build-and-push-images
