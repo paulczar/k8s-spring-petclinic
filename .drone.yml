@@ -12,7 +12,7 @@ steps:
 - name: unit-tests
   image: maven:3.6-jdk-11
   commands:
-    - mvn clean test
+    - mvn clean test -Dspring.profiles.active=test
 
 ## build binaries to ensure they compile fine
 - name: build-binaries
