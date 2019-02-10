@@ -1,7 +1,5 @@
 # Spring PetClinic Sample Application [![Build Status](http://drone.pivlab.gcp.paulczar.wtf/api/badges/paulczar/k8s-spring-petclinic/status.svg)](http://drone.pivlab.gcp.paulczar.wtf/paulczar/k8s-spring-petclinic)
 
-
-
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
 
