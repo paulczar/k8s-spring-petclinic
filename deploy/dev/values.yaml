@@ -1,0 +1,41 @@
+nameOverride: dev-petclinic
+fullnameOverride: dev-petclinic
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: gce
+    ingress.kubernetes.io/ssl-redirect: 'true'
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    certmanager.k8s.io/acme-http01-edit-in-place: "true"
+    kubernetes.io/tls-acme: 'true'
+  hosts:
+    - dev-petclinic.pivlab.gcp.paulczar.wtf
+  tls:
+    - secretName: drone-tls
+      hosts:
+        - dev-petclinic.pivlab.gcp.paulczar.wtf
+
+service:
+  type: NodePort
+
+resources:
+  limits:
+   cpu: 100m
+   memory: 128Mi
+  requests:
+   cpu: 100m
+   memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /actuator/health
+    port: http
+  initialDelaySeconds: 300
+  periodSeconds: 10
+readinessProbe: {}
+  httpGet:
+    path: /actuator/health
+    port: http
+  initialDelaySeconds: 60
+  periodSeconds: 10

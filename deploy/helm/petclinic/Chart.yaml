@@ -1,8 +1,0 @@
-apiVersion: v1
-appVersion: "0.0.2-SNAPSHOT"
-description: Helm chart for the spring petclinic example
-name: petclinic
-version: 0.0.1
-home: https://github.com/paulczar/k8s-spring-petclinic
-maintainers:
-  - name: paulczar
