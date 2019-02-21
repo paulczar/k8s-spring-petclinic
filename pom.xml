@@ -18,11 +18,11 @@
     <!-- Version properties -->
     <docker.user>paulczar</docker.user>
     <docker.tag>${project.version}-${git.commit.id.abbrev}</docker.tag>
+    <micrometer.version>1.1.0-SNAPSHOT</micrometer.version>
     <!-- Generic properties -->
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
     <!-- Web dependencies -->
     <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
     <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
@@ -35,6 +35,11 @@
 
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-kubernetes</artifactId>
+        <version>1.0.0.RELEASE</version>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -59,6 +64,16 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <version>${micrometer.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.prometheus</groupId>
+      <artifactId>simpleclient_pushgateway</artifactId>
+      <version>0.6.0</version>
     </dependency>
 
     <!-- Databases - Uses HSQL by default -->
