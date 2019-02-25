@@ -1,31 +1,58 @@
 nameOverride: dev-petclinic
 fullnameOverride: dev-petclinic
 
+image:
+  repository: paulczar/petclinic
+  tag: latest
+  pullPolicy: Always
+
 ingress:
   enabled: true
   annotations:
     kubernetes.io/ingress.class: gce
-    ingress.kubernetes.io/ssl-redirect: 'true'
-    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
-    certmanager.k8s.io/acme-http01-edit-in-place: "true"
-    kubernetes.io/tls-acme: 'true'
   hosts:
     - dev-petclinic.pivlab.gcp.paulczar.wtf
-  tls:
-    - secretName: drone-tls
-      hosts:
-        - dev-petclinic.pivlab.gcp.paulczar.wtf
 
 service:
   type: NodePort
 
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/path: "/actuator/prometheus"
+
+javaToolOptions: "-Xmx500m"
+
+spring:
+  kubernetes: false
+  config:
+    content: |
+      spring:
+        devtools.add-properties: false
+        datasource:
+          initialize: true
+          schema: "classpath*:db/mysql/schema.sql"
+          data: "classpath*:db/mysql/data.sql"
+          url: "jdbc:mysql://${database.host}/${database.name}"
+          username: ${database.username}
+          password: ${database.password}
+        #jpa.generate-ddl: false
+        #jpa.hibernate.ddl: create
+        #jpa.hibernate.ddl-auto: update
+        #jpa.hibernate.naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        #jpa.properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+      database.host: petclinic-dev-db-mysql
+      database.name: petclinic
+      database.username: root
+      database.password: shitty-root-password
+      database.engine: mysql
+
 resources:
   limits:
-   cpu: 100m
-   memory: 128Mi
+   cpu: 500m
+   memory: 512Mi
   requests:
-   cpu: 100m
-   memory: 128Mi
+   cpu: 500m
+   memory: 512Mi
 
 livenessProbe:
   httpGet:
@@ -33,7 +60,7 @@ livenessProbe:
     port: http
   initialDelaySeconds: 300
   periodSeconds: 10
-readinessProbe: {}
+readinessProbe:
   httpGet:
     path: /actuator/health
     port: http

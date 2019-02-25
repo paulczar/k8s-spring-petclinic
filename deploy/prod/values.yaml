@@ -12,7 +12,7 @@ ingress:
   hosts:
     - petclinic.pivlab.gcp.paulczar.wtf
   tls:
-    - secretName: drone-tls
+    - secretName: prod-petclinic-tls
       hosts:
         - petclinic.pivlab.gcp.paulczar.wtf
 

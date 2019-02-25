@@ -1,0 +1,5 @@
+
+mysqlRootPassword: shitty-root-password
+mysqlUser: petclinic
+mysqlPassword: petclinic
+mysqlDatabase: petclinic
